@@ -94,7 +94,7 @@ export default function PlaygroundPage() {
   const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint>(endpoints[0]);
   const [activeTab, setActiveTab] = useState<'request' | 'response' | 'code'>('request');
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<unknown>(null);
+  const [response, setResponse] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [requestBody, setRequestBody] = useState(JSON.stringify(endpoints[0].bodyExample || {}, null, 2));

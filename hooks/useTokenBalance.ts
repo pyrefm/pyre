@@ -18,7 +18,7 @@ export function useTokenBalance() {
   const { publicKey, connected } = useWallet();
   const [state, setState] = useState<TokenBalanceState>({
     balance: 0,
-    rawBalance: 0n,
+    rawBalance: BigInt(0),
     hasTokens: false,
     loading: false,
     error: null,
@@ -30,7 +30,7 @@ export function useTokenBalance() {
       setState(prev => ({
         ...prev,
         balance: 0,
-        rawBalance: 0n,
+        rawBalance: BigInt(0),
         hasTokens: false,
         loading: false,
         error: null,

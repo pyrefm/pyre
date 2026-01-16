@@ -44,13 +44,13 @@ export async function getTokenBalance(walletAddress: string): Promise<{
       return {
         balance,
         rawBalance,
-        hasTokens: rawBalance > 0n,
+        hasTokens: rawBalance > BigInt(0),
       };
     } catch {
       // Token account doesn't exist = 0 balance
       return {
         balance: 0,
-        rawBalance: 0n,
+        rawBalance: BigInt(0),
         hasTokens: false,
       };
     }
@@ -58,7 +58,7 @@ export async function getTokenBalance(walletAddress: string): Promise<{
     console.error('Error getting token balance:', error);
     return {
       balance: 0,
-      rawBalance: 0n,
+      rawBalance: BigInt(0),
       hasTokens: false,
     };
   }
@@ -100,10 +100,10 @@ export async function createPaymentTransaction(
   const rawAmount = BigInt(Math.floor(tokenAmount * Math.pow(10, PYRE_TOKEN_CONFIG.decimals)));
   
   // Calculate distribution
-  const burnAmount = (rawAmount * 30n) / 100n;
-  const providerAmount = (rawAmount * 50n) / 100n;
-  const holdersAmount = (rawAmount * 15n) / 100n;
-  const treasuryAmount = (rawAmount * 5n) / 100n;
+  const burnAmount = (rawAmount * BigInt(30)) / BigInt(100);
+  const providerAmount = (rawAmount * BigInt(50)) / BigInt(100);
+  const holdersAmount = (rawAmount * BigInt(15)) / BigInt(100);
+  const treasuryAmount = (rawAmount * BigInt(5)) / BigInt(100);
   
   // Get token accounts
   const payerTokenAccount = await getAssociatedTokenAddress(mint, payerWallet);
