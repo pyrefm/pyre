@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: 'PYRE',
     images: [
       {
-        url: '/assets/pyre-logo-no-bg.png',
+        url: '/assets/pyre-logo.png',
         width: 512,
         height: 512,
         alt: 'PYRE - Token-Native API Payments',
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     description: 'Every API call burns $PYRE. The deflationary API economy.',
     site: '@pyrefm',
     creator: '@pyrefm',
-    images: ['/assets/pyre-logo-no-bg.png'],
+    images: ['/assets/pyre-logo.png'],
   },
   icons: {
-    icon: '/assets/pyre-logo-no-bg.png',
-    apple: '/assets/pyre-logo-no-bg.png',
+    icon: '/assets/pyre-logo.png',
+    apple: '/assets/pyre-logo.png',
   },
 };
 
