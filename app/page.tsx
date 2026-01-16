@@ -11,6 +11,7 @@ import {
   Code2, 
   ArrowRight,
   Twitter,
+  Github,
   Copy,
   Check,
   Rocket,
@@ -182,6 +183,14 @@ export default function HomePage() {
               <Link href="#tokenomics" className="text-text-secondary hover:text-white transition-colors">Tokenomics</Link>
               <Link href="/docs" className="text-text-secondary hover:text-white transition-colors">Docs</Link>
               <Link href="/playground" className="text-text-secondary hover:text-white transition-colors">Playground</Link>
+              <div className="flex items-center gap-3 ml-2 pl-4 border-l border-dark-border">
+                <a href="https://x.com/pyrefm" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-white transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="https://github.com/pyrefm/pyre" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-white transition-colors">
+                  <Github className="w-5 h-5" />
+                </a>
+              </div>
             </nav>
             
             {/* CTA */}
@@ -507,6 +516,9 @@ export default function HomePage() {
               <a href="https://x.com/pyrefm" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-white transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
+              <a href="https://github.com/pyrefm/pyre" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-white transition-colors">
+                <Github className="w-5 h-5" />
+              </a>
               <Link href="/docs" className="text-text-muted hover:text-white transition-colors">
                 Docs
               </Link>
@@ -519,7 +531,7 @@ export default function HomePage() {
             </div>
             
             <div className="text-text-muted text-sm">
-              © 2025 PYRE. Burn to earn. 🔥
+              © 2026 PYRE. Burn to earn. 🔥
             </div>
           </div>
         </div>
