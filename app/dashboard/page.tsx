@@ -19,11 +19,13 @@ import { useTokenBalance } from '@/hooks/useTokenBalance';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 interface BurnStats {
-  totalBurned: number;
-  burnedToday: number;
+  totalBurned: string;
+  burnedToday: string;
+  burnedThisWeek: string;
+  burnedThisMonth: string;
   burnRate: number;
   percentBurned: string;
-  recentBurns: { amount: string; timestamp: number; txHash?: string }[];
+  recentBurns: { amount: string; timestamp: number; txHash?: string | null }[];
 }
 
 export default function DashboardPage() {
@@ -86,14 +88,14 @@ export default function DashboardPage() {
   // Computed stats object for backward compatibility
   const stats = {
     totalBurned: burnCounter,
-    burnedToday: burnStats ? parseInt(burnStats.burnedToday) : 0,
+    burnedToday: burnStats ? Number(burnStats.burnedToday) : 0,
     burnRate: burnStats?.burnRate || 0,
     tokenPrice: tokenPrice,
     priceChange: 0, // Would come from price history API
     userBalance: balance,
     userBurned: 0, // Would come from user's transaction history
     userApiCalls: 0, // Would come from user's API usage
-    supplyPercent: burnStats ? parseFloat(burnStats.percentBurned) : 0,
+    supplyPercent: burnStats ? Number(burnStats.percentBurned) : 0,
   };
 
   return (
