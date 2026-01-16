@@ -1,0 +1,249 @@
+// PYRE Database Schema
+// Token-Native API Payment Platform with Burn Mechanism
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// USER & WALLET
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  walletAddress String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Cumulative Stats
+  totalSpent    BigInt    @default(0)    // Total $PYRE spent on API calls
+  totalBurned   BigInt    @default(0)    // Total burned from this user's calls
+  apiCallCount  Int       @default(0)    // Total API calls made
+  
+  // Referral
+  referralCode  String?   @unique
+  referredBy    String?   // Wallet that referred this user
+  
+  // Relations
+  transactions    Transaction[]
+  apiUsage        ApiUsage[]
+  
+  @@index([walletAddress])
+}
+
+// ============================================
+// TRANSACTIONS
+// ============================================
+
+model Transaction {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  
+  // API Call Info
+  endpoint        String
+  method          String      @default("POST")
+  
+  // Payment Details (all in $PYRE tokens)
+  amountPaid      BigInt      // Total paid
+  amountBurned    BigInt      // 30% burned
+  amountProvider  BigInt      // 50% to provider
+  amountHolders   BigInt      // 15% to holders pool
+  amountTreasury  BigInt      // 5% to treasury
+  
+  // Pricing at time of transaction
+  usdValue        Decimal     // USD value at tx time
+  tokenPrice      Decimal     // $PYRE price at tx time
+  
+  // Blockchain
+  txHash          String?     @unique
+  chain           Chain       @default(SOLANA)
+  status          TxStatus    @default(PENDING)
+  
+  createdAt       DateTime    @default(now())
+  confirmedAt     DateTime?
+  
+  @@index([userId])
+  @@index([endpoint])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum Chain {
+  SOLANA
+  BSC
+  ETHEREUM
+}
+
+enum TxStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+// ============================================
+// BURN TRACKING
+// ============================================
+
+model BurnRecord {
+  id          String    @id @default(cuid())
+  amount      BigInt
+  txHash      String?
+  
+  // Source
+  endpoint    String?
+  transactionId String?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([createdAt])
+}
+
+// Daily burn aggregation for charts
+model DailyBurnStats {
+  id          String    @id @default(cuid())
+  date        DateTime  @unique @db.Date
+  
+  totalBurned BigInt    @default(0)
+  apiCalls    Int       @default(0)
+  uniqueUsers Int       @default(0)
+  
+  // Top endpoints for the day
+  topEndpoints String?  // JSON array
+  
+  @@index([date])
+}
+
+// ============================================
+// GLOBAL STATS
+// ============================================
+
+model GlobalStats {
+  id                  String    @id @default("global")
+  
+  // Burn stats
+  totalBurned         BigInt    @default(0)
+  burnedToday         BigInt    @default(0)
+  burnedThisWeek      BigInt    @default(0)
+  burnedThisMonth     BigInt    @default(0)
+  
+  // Transaction stats
+  totalTransactions   BigInt    @default(0)
+  totalApiCalls       BigInt    @default(0)
+  totalVolumeUsd      Decimal   @default(0)
+  
+  // User stats
+  totalUsers          Int       @default(0)
+  activeUsersToday    Int       @default(0)
+  
+  // Derived stats
+  burnRatePerHour     BigInt    @default(0)  // Calculated average
+  supplyPercentBurned Decimal   @default(0)
+  
+  updatedAt           DateTime  @updatedAt
+}
+
+// ============================================
+// API USAGE ANALYTICS
+// ============================================
+
+model ApiUsage {
+  id          String    @id @default(cuid())
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id])
+  
+  endpoint    String
+  method      String
+  statusCode  Int
+  responseTime Int      // milliseconds
+  
+  // Payment info (if applicable)
+  paid        Boolean   @default(false)
+  amount      BigInt?
+  amountBurned BigInt?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([endpoint])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+// ============================================
+// API PROVIDERS (for marketplace)
+// ============================================
+
+model ApiProvider {
+  id            String    @id @default(cuid())
+  walletAddress String    @unique
+  
+  name          String
+  description   String?
+  website       String?
+  
+  // Earnings
+  totalEarnings BigInt    @default(0)
+  
+  // Stats
+  totalCalls    BigInt    @default(0)
+  avgRating     Decimal   @default(0)
+  
+  verified      Boolean   @default(false)
+  
+  endpoints     ApiEndpoint[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model ApiEndpoint {
+  id          String      @id @default(cuid())
+  providerId  String
+  provider    ApiProvider @relation(fields: [providerId], references: [id])
+  
+  path        String
+  method      String      @default("POST")
+  description String?
+  
+  priceUsd    Decimal     // Price in USD
+  
+  // Stats
+  totalCalls  BigInt      @default(0)
+  totalBurned BigInt      @default(0)  // Total tokens burned via this endpoint
+  avgResponse Int         @default(0) // ms
+  uptime      Decimal     @default(100)
+  
+  active      Boolean     @default(true)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@unique([providerId, path, method])
+}
+
+// ============================================
+// BURN LEADERBOARD
+// ============================================
+
+model BurnLeaderboard {
+  id            String    @id @default(cuid())
+  walletAddress String    @unique
+  
+  totalBurned   BigInt    @default(0)
+  apiCalls      Int       @default(0)
+  rank          Int?
+  
+  // Badges/achievements
+  badges        String?   // JSON array of badge IDs
+  
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([totalBurned(sort: Desc)])
+  @@index([rank])
+}
