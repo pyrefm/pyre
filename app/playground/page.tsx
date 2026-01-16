@@ -313,7 +313,7 @@ const data = await response.json();
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-20"
         >
-          <source src="/assets/another-video.mp4" type="video/mp4" />
+          <source src="/assets/demo-video-1.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-dark/80" />
       </div>

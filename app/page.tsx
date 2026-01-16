@@ -207,7 +207,7 @@ export default function HomePage() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover opacity-40"
           >
-            <source src="/assets/grok-video-e2be8edc-a829-4093-955b-6741f5e3a196.mp4" type="video/mp4" />
+            <source src="/assets/demo-video-2.mp4" type="video/mp4" />
           </video>
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/80 to-dark" />
