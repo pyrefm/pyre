@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withTokenPayment } from '@/lib/payments/middleware';
 import axios from 'axios';
 
+// Prevent static generation
+export const dynamic = 'force-dynamic';
+
 // Using wttr.in - completely free, no API key needed
 const WTTR_API = 'https://wttr.in';
 

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withTokenPayment } from '@/lib/payments/middleware';
 import QRCode from 'qrcode';
 
+// Prevent static generation
+export const dynamic = 'force-dynamic';
+
 async function handler(req: NextRequest) {
   try {
     const body = await req.json();

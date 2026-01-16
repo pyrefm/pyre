@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withTokenPayment } from '@/lib/payments/middleware';
 import axios from 'axios';
 
+// Prevent static generation
+export const dynamic = 'force-dynamic';
+
 const COINGECKO_API = 'https://api.coingecko.com/api/v3';
 
 // Map common symbols to CoinGecko IDs

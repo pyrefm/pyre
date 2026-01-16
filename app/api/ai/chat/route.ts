@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withTokenPayment } from '@/lib/payments/middleware';
 import { chatCompletion, isOpenAIConfigured } from '@/lib/ai/openai';
 
+// Prevent static generation
+export const dynamic = 'force-dynamic';
+
 async function handler(req: NextRequest) {
   try {
     // Check if OpenAI is configured
