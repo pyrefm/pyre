@@ -99,7 +99,7 @@ export default function DocsLayout({
               Playground
             </Link>
             <a
-              href="https://github.com/pyre-protocol"
+              href="https://github.com/pyrefm/pyre"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-text-secondary hover:text-white transition-colors"
