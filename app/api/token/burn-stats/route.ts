@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getBurnStats, getBurnProjection, getBurnHistory } from '@/lib/token/burn';
 
+// Prevent static generation - this route needs database access
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const [stats, projection, history] = await Promise.all([

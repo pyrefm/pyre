@@ -3,6 +3,9 @@ import { getTokenPriceSafe, getAllEndpointPrices } from '@/lib/token/pricing';
 import { PYRE_TOKEN } from '@/lib/token/config';
 import { isTokenConfigured, PYRE_TOKEN_CONFIG } from '@/lib/solana/config';
 
+// Prevent static generation - this route fetches external data
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const tokenConfigured = isTokenConfigured();
