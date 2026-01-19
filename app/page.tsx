@@ -72,9 +72,9 @@ export default function HomePage() {
   const { stats, loading, animatedBurn } = useBurnStats();
   const [copied, setCopied] = useState(false);
   
-  // Token address - will be updated after bags.fm launch
-  const contractAddress = process.env.NEXT_PUBLIC_PYRE_TOKEN_MINT || '';
-  const isTokenLaunched = contractAddress && contractAddress.length > 30;
+  // $PYRE Token Contract Address
+  const contractAddress = 'Ecqv1vJq8dDHqq7hU5bLFZC42DQSsKgnANFdaFEtBAGS';
+  const isTokenLaunched = true;
   
   const copyAddress = () => {
     navigator.clipboard.writeText(contractAddress);
