@@ -22,13 +22,22 @@ interface WalletProviderProps {
 }
 
 export default function WalletProvider({ children }: WalletProviderProps) {
-  // Configure network
-  const network = process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'mainnet-beta' 
-    ? 'mainnet-beta' 
-    : 'devnet';
+  // Configure network - default to mainnet
+  const network = process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'devnet' 
+    ? 'devnet' 
+    : 'mainnet-beta';
   
+  // Use Helius RPC for better reliability
   const endpoint = useMemo(() => {
-    return process.env.NEXT_PUBLIC_SOLANA_RPC_URL || clusterApiUrl(network);
+    // Priority: env var > hardcoded Helius > public RPC
+    if (process.env.NEXT_PUBLIC_SOLANA_RPC_URL) {
+      return process.env.NEXT_PUBLIC_SOLANA_RPC_URL;
+    }
+    // Helius RPC for mainnet
+    if (network === 'mainnet-beta') {
+      return 'https://mainnet.helius-rpc.com/?api-key=bd23840a-c606-4c7d-a300-805af20fbb84';
+    }
+    return clusterApiUrl(network);
   }, [network]);
 
   // Configure wallets
