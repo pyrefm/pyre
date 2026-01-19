@@ -277,8 +277,43 @@ export default function HomePage() {
             ))}
           </div>
           
+          {/* Contract Address - Prominent CA Section */}
+          {isTokenLaunched ? (
+            <div className="mb-12">
+              <div className="glass-card p-6 max-w-xl mx-auto border-2 border-pyre-primary/30 hover:border-pyre-primary/50 transition-all">
+                <div className="text-xs text-text-muted uppercase tracking-wider mb-2">Contract Address</div>
+                <div className="flex items-center justify-center gap-3">
+                  <code className="text-lg md:text-xl font-mono text-white font-medium tracking-wide">
+                    {contractAddress}
+                  </code>
+                  <button 
+                    onClick={copyAddress} 
+                    className="p-2 bg-pyre-primary/20 hover:bg-pyre-primary/30 rounded-lg transition-all group"
+                    title="Copy address"
+                  >
+                    {copied ? (
+                      <Check className="w-5 h-5 text-accent" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-pyre-primary group-hover:scale-110 transition-transform" />
+                    )}
+                  </button>
+                </div>
+                {copied && (
+                  <div className="text-accent text-sm mt-2 animate-pulse">Copied to clipboard!</div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-burn/10 border border-burn/30 burn-glow">
+                <Flame className="w-5 h-5 text-burn animate-pulse" />
+                <span className="text-burn font-medium">Token Launch Coming Soon</span>
+              </div>
+            </div>
+          )}
+
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/playground" className="btn-burn flex items-center gap-2 text-lg px-8 py-4">
               <Rocket className="w-5 h-5" />
               Try API Playground
@@ -288,24 +323,6 @@ export default function HomePage() {
               View Burn Stats
             </Link>
           </div>
-          
-          {/* Contract Address */}
-          {isTokenLaunched ? (
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-dark-card border border-dark-border">
-              <span className="text-text-muted text-sm">CA:</span>
-              <code className="text-text-secondary font-mono text-sm">
-                {contractAddress.slice(0, 8)}...{contractAddress.slice(-8)}
-              </code>
-              <button onClick={copyAddress} className="p-1 hover:bg-dark-elevated rounded transition-colors">
-                {copied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4 text-text-muted" />}
-              </button>
-            </div>
-          ) : (
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-burn/10 border border-burn/30">
-              <Flame className="w-4 h-4 text-burn" />
-              <span className="text-burn font-medium text-sm">Token Launch Coming Soon</span>
-            </div>
-          )}
         </div>
       </section>
 
