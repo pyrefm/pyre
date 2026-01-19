@@ -6,10 +6,9 @@
 import { PublicKey } from '@solana/web3.js';
 
 // $PYRE Token Configuration
-// UPDATE THIS WITH YOUR BAGS.FM TOKEN ADDRESS!
 export const PYRE_TOKEN_CONFIG = {
-  // Token mint address - UPDATE AFTER LAUNCH!
-  mint: process.env.NEXT_PUBLIC_PYRE_TOKEN_MINT || 'PYRE_TOKEN_MINT_ADDRESS_HERE',
+  // Token mint address
+  mint: process.env.NEXT_PUBLIC_PYRE_TOKEN_MINT || 'Ecqv1vJq8dDHqq7hU5bLFZC42DQSsKgnANFdaFEtBAGS',
   
   // Token details
   name: 'PYRE',
