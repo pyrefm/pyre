@@ -277,40 +277,31 @@ export default function HomePage() {
             ))}
           </div>
           
-          {/* Contract Address - Prominent CA Section */}
-          {isTokenLaunched ? (
-            <div className="mb-12">
-              <div className="glass-card p-6 max-w-xl mx-auto border-2 border-pyre-primary/30 hover:border-pyre-primary/50 transition-all">
-                <div className="text-xs text-text-muted uppercase tracking-wider mb-2">Contract Address</div>
-                <div className="flex items-center justify-center gap-3">
-                  <code className="text-lg md:text-xl font-mono text-white font-medium tracking-wide">
-                    {contractAddress}
-                  </code>
-                  <button 
-                    onClick={copyAddress} 
-                    className="p-2 bg-pyre-primary/20 hover:bg-pyre-primary/30 rounded-lg transition-all group"
-                    title="Copy address"
-                  >
-                    {copied ? (
-                      <Check className="w-5 h-5 text-accent" />
-                    ) : (
-                      <Copy className="w-5 h-5 text-pyre-primary group-hover:scale-110 transition-transform" />
-                    )}
-                  </button>
-                </div>
-                {copied && (
-                  <div className="text-accent text-sm mt-2 animate-pulse">Copied to clipboard!</div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="mb-12">
-              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-burn/10 border border-burn/30 burn-glow">
-                <Flame className="w-5 h-5 text-burn animate-pulse" />
-                <span className="text-burn font-medium">Token Launch Coming Soon</span>
-              </div>
-            </div>
-          )}
+          {/* Contract Address - CA Section */}
+          <div className="mb-10">
+            <button
+              onClick={copyAddress}
+              className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-dark-card to-dark-elevated border border-dark-border hover:border-pyre-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-pyre-primary/10"
+            >
+              <span className="text-xs text-text-muted font-medium uppercase tracking-wider">CA</span>
+              <span className="w-px h-4 bg-dark-border" />
+              <code className="text-sm md:text-base font-mono text-text-secondary group-hover:text-white transition-colors">
+                {contractAddress.slice(0, 4)}...{contractAddress.slice(-4)}
+              </code>
+              <span className="w-px h-4 bg-dark-border" />
+              {copied ? (
+                <span className="flex items-center gap-1 text-accent text-xs font-medium">
+                  <Check className="w-3.5 h-3.5" />
+                  Copied!
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-text-muted group-hover:text-pyre-primary text-xs font-medium transition-colors">
+                  <Copy className="w-3.5 h-3.5" />
+                  Copy
+                </span>
+              )}
+            </button>
+          </div>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
