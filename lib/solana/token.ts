@@ -33,21 +33,30 @@ export async function getTokenBalance(walletAddress: string): Promise<{
     const wallet = new PublicKey(walletAddress);
     const mint = new PublicKey(PYRE_TOKEN_CONFIG.mint);
     
+    console.log('[getTokenBalance] Mint:', PYRE_TOKEN_CONFIG.mint);
+    console.log('[getTokenBalance] Wallet:', walletAddress);
+    console.log('[getTokenBalance] Decimals:', PYRE_TOKEN_CONFIG.decimals);
+    
     // Get associated token account
     const tokenAccount = await getAssociatedTokenAddress(mint, wallet);
+    console.log('[getTokenBalance] Token Account:', tokenAccount.toString());
     
     try {
       const account = await getAccount(connection, tokenAccount);
       const rawBalance = account.amount;
       const balance = Number(rawBalance) / Math.pow(10, PYRE_TOKEN_CONFIG.decimals);
       
+      console.log('[getTokenBalance] Raw Balance:', rawBalance.toString());
+      console.log('[getTokenBalance] Balance:', balance);
+      
       return {
         balance,
         rawBalance,
         hasTokens: rawBalance > BigInt(0),
       };
-    } catch {
+    } catch (err) {
       // Token account doesn't exist = 0 balance
+      console.log('[getTokenBalance] Token account not found or error:', err);
       return {
         balance: 0,
         rawBalance: BigInt(0),
@@ -55,7 +64,7 @@ export async function getTokenBalance(walletAddress: string): Promise<{
       };
     }
   } catch (error) {
-    console.error('Error getting token balance:', error);
+    console.error('[getTokenBalance] Error:', error);
     return {
       balance: 0,
       rawBalance: BigInt(0),

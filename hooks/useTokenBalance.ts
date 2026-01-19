@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getTokenBalance } from '@/lib/solana/token';
-import { isTokenConfigured } from '@/lib/solana/config';
 
 export interface TokenBalanceState {
   balance: number;
@@ -22,7 +20,7 @@ export function useTokenBalance() {
     hasTokens: false,
     loading: false,
     error: null,
-    isConfigured: false,
+    isConfigured: true, // Token is configured
   });
 
   const fetchBalance = useCallback(async () => {
@@ -38,29 +36,27 @@ export function useTokenBalance() {
       return;
     }
 
-    if (!isTokenConfigured()) {
-      setState(prev => ({
-        ...prev,
-        isConfigured: false,
-        loading: false,
-        error: 'Token not configured',
-      }));
-      return;
-    }
-
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const result = await getTokenBalance(publicKey.toString());
+      // Use server-side API to fetch balance (uses private RPC)
+      const res = await fetch(`/api/token/balance?wallet=${publicKey.toString()}`);
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch balance');
+      }
+
       setState({
-        balance: result.balance,
-        rawBalance: result.rawBalance,
-        hasTokens: result.hasTokens,
+        balance: data.data.balance,
+        rawBalance: BigInt(data.data.rawBalance),
+        hasTokens: data.data.hasTokens,
         loading: false,
         error: null,
         isConfigured: true,
       });
     } catch (error) {
+      console.error('[useTokenBalance] Error:', error);
       setState(prev => ({
         ...prev,
         loading: false,
