@@ -21,16 +21,15 @@ export const PYRE_TOKEN_CONFIG = {
 };
 
 // Payment Distribution Wallets
-// UPDATE THESE WITH YOUR WALLET ADDRESSES!
 export const PAYMENT_WALLETS = {
-  // Main payment receiving wallet (receives all payments initially)
-  payment: process.env.NEXT_PUBLIC_PAYMENT_WALLET || 'PAYMENT_WALLET_ADDRESS_HERE',
+  // Main payment receiving wallet (receives 50% - API provider payments)
+  payment: process.env.NEXT_PUBLIC_PAYMENT_WALLET || '2i4TTB1HqwofdEHjosmh9ESvwWY8SEo7XbhM3LBPryE1',
   
   // Treasury wallet (receives 5%)
-  treasury: process.env.NEXT_PUBLIC_TREASURY_WALLET || 'TREASURY_WALLET_ADDRESS_HERE',
+  treasury: process.env.NEXT_PUBLIC_TREASURY_WALLET || 'Ggr67uTfbsuJn699A9RGHFzwbwRhFChvdPy1KULEum3E',
   
   // Holder rewards pool (receives 15%)
-  holderPool: process.env.NEXT_PUBLIC_HOLDER_POOL_WALLET || 'HOLDER_POOL_WALLET_ADDRESS_HERE',
+  holderPool: process.env.NEXT_PUBLIC_HOLDER_POOL_WALLET || '71w4H4CyT8PfyAzEcmmh7DLjeqg6eA84McvvdRkYM3Rp',
   
   // Burn address (Solana's null address for permanent burns)
   burn: '1nc1nerator11111111111111111111111111111111', // Standard burn address
